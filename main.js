@@ -91,3 +91,25 @@ const menuTemplate = [
 
     }
 ];
+
+//Add devloper tools item if not in production
+if(proccess.env.NODE_ENV !== 'production')
+{
+    menuTemplate.push({
+        label: 'Developer Tools',
+        submenu: [
+            {
+                label: 'Toggle DevTools',
+                accelerator: process.platform == 'darwin' ? 'Command+I' : 
+                'CTRL+I',
+                click(item, FocusedWindow)
+                {
+                    FocusedWindow.toggleDevTools();
+                }
+
+            }
+        ]
+
+    });
+
+}
