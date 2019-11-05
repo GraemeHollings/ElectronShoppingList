@@ -19,6 +19,13 @@ app.on('ready', function()
         protocol: 'file:',
         slashes: true
     })); //file://dirname//mainWindow.html
+    
+    //Quit app once the main window is closed.
+    mainWindow.on('closed', function()
+    {
+        app.quit();
+    });
+
 
     //Build Menu from template
     const mainMenu = Menu.buildFromTemplate(menuTemplate);
@@ -39,11 +46,18 @@ function createAddWindow()
 
     });
 
+    //Load the add window html file.
     addWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'addWindow.html'),
         protocol: 'file:',
         slashes: true
     }));
+
+    //Garbage Collection handle, nulls out addWindow once it is closed.
+    addWindow.on('close', function(){
+        addWindow = null
+    });
+
 }
 //Create a menu template
 const menuTemplate = [
