@@ -12,7 +12,12 @@ let addWindow;
 app.on('ready', function()
 {
     //Create new window
-    mainWindow = new BrowserWindow({});
+    mainWindow = new BrowserWindow({
+
+        webPreferences: {
+            nodeIntegration: true
+        }
+    });
     //Load HTML file into window
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'mainWindow.html'),
@@ -42,8 +47,10 @@ function createAddWindow()
 
         width: 400,
         height: 300,
-        title: 'Add Shopping List Item'
-
+        title: 'Add Shopping List Item',
+        webPreferences: {
+            nodeIntegration: true
+        }
     });
 
     //Load the add window html file.
@@ -93,7 +100,7 @@ const menuTemplate = [
 ];
 
 //Add devloper tools item if not in production
-if(proccess.env.NODE_ENV !== 'production')
+if(process.env.NODE_ENV !== 'production')
 {
     menuTemplate.push({
         label: 'Developer Tools',
@@ -106,10 +113,13 @@ if(proccess.env.NODE_ENV !== 'production')
                 {
                     FocusedWindow.toggleDevTools();
                 }
+            },
+            {
+                role: 'reload'
+
 
             }
         ]
-
     });
 
 }
