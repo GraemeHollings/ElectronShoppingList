@@ -3,10 +3,15 @@ const url = require('url');
 const path = require('path');
 
 //Bringing everything in from Electron
-const {app, BrowserWindow, Menu} = electron;
+const {app, BrowserWindow, Menu, ipcMain} = electron;
+
+//SET ENVIROMNET TO PRODUCTION
+process.env.NODE_ENV = 'production';
+
 
 let mainWindow;
 let addWindow;
+
 
 // Listen for app to be ready
 app.on('ready', function()
@@ -66,6 +71,16 @@ function createAddWindow()
     });
 
 }
+
+//Catch item:add from addWindow.html
+ipcMain.on('item:add', function(e, item){
+    console.log(item);
+    mainWindow.webContents.send('item:add', item);
+    addWindow.close();
+
+});
+
+
 //Create a menu template
 const menuTemplate = [
     {
@@ -81,8 +96,13 @@ const menuTemplate = [
 
             },
             {
-                label: 'Clear Items'
+                label: 'Clear Items',
+                click()
+                {
+                    mainWindow.webContents.send('item:clear');
 
+
+                }
             },
             {
 
